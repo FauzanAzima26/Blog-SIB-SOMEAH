@@ -5,16 +5,18 @@ namespace App\Http\Controllers\backend;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\service\backend\categoryService;
 use Yajra\DataTables\Facades\DataTables;
 
 class categoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    public function __construct(
+        private categoryService $categoryService
+    ){}
+
     public function index()
     {
-        //
+        return view('backend.index');
     }
 
     /**
@@ -66,10 +68,7 @@ class categoryController extends Controller
     }
 
     public function getData(){
-        $data = Category::select('name','slug')->get();
-        
-        return DataTables::of($data)
-        ->addIndexColumn()
-        ->make(true);
+
+        return $this->categoryService->serverSide();
     }
 }
