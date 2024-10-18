@@ -15,6 +15,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             categorySeeder::class
+
+        ]);
+
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'email_verified_at' => now(),
+            'password' => bcrypt('00000000'),
         ]);
     }
 }

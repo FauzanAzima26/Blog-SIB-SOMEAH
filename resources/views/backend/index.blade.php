@@ -11,6 +11,7 @@
 
 @push('js')
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.js"></script>
@@ -20,18 +21,53 @@
             $('#example').DataTable({
                 processing: true,
                 serverSide: true,
+                responsive: true,
                 ajax: {
                     url: "{{ route('serverside') }}", // URL untuk mengambil data
                     type: 'GET',
                 },
                 columns: [
-                    { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
+                    { data: 'DT_RowIndex', name: 'DT_RowIndex' },
                     { data: 'name', name: 'name' },
                     { data: 'slug', name: 'slug' },
-                    { data: 'action', name: 'action', orderable: false, searchable: false },
-                ]
+                    { data: 'action', name: 'action', orderable: true, searchable: true },
+                ],
             });
         });
+
+        const destroyCategory = (e) => {
+            let id = e.getAttribute('data-id');
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Do you want delete this category?",
+                icon: "question",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#007bff",
+                allowOutsideClick: false,
+                showCancelButton: true,
+                showCloseButton: true
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "DELETE",
+                        url: "/admin/category/" + id,
+                        dataType: "json",
+                        success: function (response) {
+                            alert('ok');
+                        },
+                        error: function (response) {
+                            console.log(response);
+                        }
+                    });
+                }
+            })
+        }
     </script>
 
 @endpush
@@ -40,7 +76,7 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <x-card icon="list" title="Categories">
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered" id="example">

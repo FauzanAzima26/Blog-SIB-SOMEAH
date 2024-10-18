@@ -64,7 +64,7 @@ class categoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        dd($id);
     }
 
     public function getData(){
