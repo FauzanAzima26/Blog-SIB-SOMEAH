@@ -49,6 +49,7 @@
                 allowOutsideClick: false,
                 showCancelButton: true,
                 showCloseButton: true
+                
             }).then((result) => {
                 if (result.value) {
                     $.ajax({

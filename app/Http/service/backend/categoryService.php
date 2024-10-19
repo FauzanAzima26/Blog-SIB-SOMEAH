@@ -3,7 +3,6 @@
 namespace App\Http\service\backend;
 
 use App\Models\Category;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class categoryService
@@ -15,7 +14,7 @@ class categoryService
         // $data = DB::table('categories')->latest()->select('uuid', 'name', 'slug')->get(); 
 
         // Cara untuk mengoptimalkan waktu menunggu/menerima request
-        $totalData = Category::count();  
+        $totalData = Category::count();
         $totalFiltered = $totalData;
         $limit = request()->length;
         $start = request()->start;
@@ -27,8 +26,8 @@ class categoryService
 
         return DataTables::of($data)
             ->addColumn('action', function ($row) {
-                $btn = 
-                '<div class="text-center" width="10%>
+                $btn =
+                    '<div class="text-center" width="10%>
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-primary" onclick="editCategory(this)" data-id="' . $row->uuid . '"><i class="fas fa-edit"></i></button>
                         <button type="button" class="btn btn-sm btn-danger" onclick="destroyCategory(this)" data-id="' . $row->uuid . '"><i class="fas fa-trash"></i></button>
