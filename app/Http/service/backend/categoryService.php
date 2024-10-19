@@ -3,6 +3,7 @@
 namespace App\Http\service\backend;
 
 use App\Models\Category;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
 class categoryService
@@ -29,7 +30,8 @@ class categoryService
                 $btn =
                     '<div class="text-center" width="10%>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-primary" onclick="editCategory(this)" data-id="' . $row->uuid . '"><i class="fas fa-edit"></i></button>
+                        <button type="button" class="btn btn-sm btn-primary" onclick="showCategory(this)" data-id="' . $row->uuid . '"><i class="fas fa-eye"></i></button>
+                        <button type="button" class="btn btn-sm btn-warning" onclick="editCategory(this)" data-id="' . $row->uuid . '"><i class="fas fa-edit"></i></button>
                         <button type="button" class="btn btn-sm btn-danger" onclick="destroyCategory(this)" data-id="' . $row->uuid . '"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>';
@@ -43,5 +45,22 @@ class categoryService
             ->setOffset($start)
             ->addIndexColumn()
             ->make(true);
+    }
+
+    public function getFirstBy($columns, $value){
+
+        return Category::where($columns, $value)->firstOrFail();
+    }
+
+    public function create(array $data)
+    {
+        $data['slug'] = Str::slug($data['name']);
+        return Category::create($data);
+    }
+
+    public function update(array $data, string $id)
+    {
+        $data['slug'] = Str::slug($data['name']);
+        return Category::where('uuid', $id)->update($data);
     }
 }
