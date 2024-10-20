@@ -20,10 +20,20 @@ class categoryService
         $limit = request()->length;
         $start = request()->start;
 
-        $data = Category::latest()
+        if(empty(request()->search['value'])) {
+            $data = Category::latest()
             ->offset($start)
             ->limit($limit)
             ->get(['uuid', 'name', 'slug']);
+        }else{
+            $data = Category::filter(request()->search['value'])
+            ->latest()
+            ->offset($start)
+            ->limit($limit)
+            ->get(['uuid', 'name', 'slug']);
+
+            $totalFiltered = $data->count();
+        }
 
         return DataTables::of($data)
             ->addColumn('action', function ($row) {

@@ -21,4 +21,9 @@ class Category extends Model
             $category->slug = Str::slug($category->name);
         });
     }
+
+    public static function filter($search){
+        return Category::where('name', 'like', "%{$search}%")
+        ->orWhere('slug', 'like', "%{$search}%");
+    }
 }

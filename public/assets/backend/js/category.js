@@ -6,7 +6,7 @@ $(document).ready(function () {
         serverSide: true,
         responsive: true,
         ajax: {
-            url: '/admin/serverside', // URL untuk mengambil data
+            url: "/admin/serverside", // URL untuk mengambil data
             type: "GET",
         },
         columns: [
@@ -58,6 +58,9 @@ const destroyCategory = (e) => {
                     console.log(response);
                 },
             });
+        } else {
+            // Tindakan ketika result.value tidak benar
+            stopLoading();
         }
     });
 };
@@ -107,24 +110,24 @@ $("#formCategory").on("submit", function (e) {
             toastError(jqXHR.responseText);
         },
     });
-})
+});
 
 const editCategory = (e) => {
     let id = e.getAttribute("data-id");
-    
+
     startLoading();
     resetForm("#formCategory");
     resetValidation();
 
     $.ajax({
         type: "GET",
-        url: "/admin/category/" + id, 
+        url: "/admin/category/" + id,
         success: function (response) {
             let parsedData = response.data;
 
-            $('#id').val(parsedData.uuid);
-            $('#name').val(parsedData.name);
-            $('#modalCategory').modal('show');
+            $("#id").val(parsedData.uuid);
+            $("#name").val(parsedData.name);
+            $("#modalCategory").modal("show");
             $(".modalTitle").html('<i class="fa fa-edit"></i> Edit');
             $(".btnSubmit").html('<i class="fa fa-save"></i> Update');
 
@@ -137,4 +140,4 @@ const editCategory = (e) => {
             toastError(jqXHR.responseText);
         },
     });
-}
+};
