@@ -6,7 +6,7 @@ $(document).ready(function () {
         serverSide: true,
         responsive: true,
         ajax: {
-            url: "/admin/tag/serverside", // URL untuk mengambil data
+            url: "tag-serverside", // URL untuk mengambil data
             type: "GET",
         },
         columns: [
@@ -23,49 +23,7 @@ $(document).ready(function () {
     });
 });
 
-const destroyTag = (e) => {
-    let id = e.getAttribute("data-id");
-
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want delete this tag?",
-        icon: "question",
-        confirmButtonText: "Yes",
-        cancelButtonText: "No",
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#007bff",
-        allowOutsideClick: false,
-        showCancelButton: true,
-        showCloseButton: true,
-    }).then((result) => {
-        startLoading();
-
-        if (result.value) {
-            $.ajax({
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                        "content"
-                    ),
-                },
-                type: "DELETE",
-                url: "/admin/tag" + id,
-                dataType: "json",
-                success: function (response) {
-                    reloadTable();
-                    toastSuccess(response.message);
-                },
-                error: function (response) {
-                    console.log(response);
-                },
-            });
-        } else {
-            // Tindakan ketika result.value tidak benar
-            stopLoading();
-        }
-    });
-};
-
-// Form Create
+// create
 const modalTag = (e) => {
     resetForm("#formTag");
     $("#modalTag").modal("show");
@@ -74,7 +32,7 @@ const modalTag = (e) => {
     resetValidation();
 };
 
-// create/save data
+// saveCreate
 $("#formTag").on("submit", function (e) {
     e.preventDefault();
     startLoading();
@@ -112,6 +70,7 @@ $("#formTag").on("submit", function (e) {
     });
 });
 
+// update
 const editTag = (e) => {
     let id = e.getAttribute("data-id");
 
@@ -139,5 +98,48 @@ const editTag = (e) => {
             console.log(jqXHR.responseText);
             toastError(jqXHR.responseText);
         },
+    });
+};
+
+// destroy
+const destroyTag = (e) => {
+    let id = e.getAttribute("data-id");
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want delete this Tag?",
+        icon: "question",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#007bff",
+        allowOutsideClick: false,
+        showCancelButton: true,
+        showCloseButton: true,
+    }).then((result) => {
+        startLoading();
+
+        if (result.value) {
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                type: "DELETE",
+                url: "/admin/tag/" + id,
+                dataType: "json",
+                success: function (response) {
+                    reloadTable();
+                    toastSuccess(response.message);
+                },
+                error: function (response) {
+                    console.log(response);
+                },
+            });
+        } else {
+            // Tindakan ketika result.value tidak benar
+            stopLoading();
+        }
     });
 };
