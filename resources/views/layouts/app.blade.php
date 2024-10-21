@@ -50,7 +50,7 @@
                             <a class="nav-link {{request()->routeIs('admin.category.index') ? 'active' : ''}}" href="{{ route('admin.category.index') }}">Categories</a>
                         </li>
                         <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.tag.index') ? 'active' : ''}}">
-                            <a class="nav-link rounded-pill {{request()->routeIs('admin.tag.index') ? 'active' : ''}}" href="{{ route('admin.tag') }}">Tag</a>
+                            <a class="nav-link rounded-pill {{request()->routeIs('admin.tag.index') ? 'active' : ''}}" href="#">Tag</a>
                         </li>
                     </ul>
 
