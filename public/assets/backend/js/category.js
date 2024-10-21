@@ -67,6 +67,9 @@ const destroyCategory = (e) => {
 
 // Form Create
 const modalCategory = (e) => {
+
+    submitMethod = "create";
+
     resetForm("#formCategory");
     $("#modalCategory").modal("show");
     $(".modalTitle").html('<i class="fa fa-plus"></i> Create');

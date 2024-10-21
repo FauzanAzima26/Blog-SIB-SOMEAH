@@ -25,6 +25,9 @@ $(document).ready(function () {
 
 // create
 const modalTag = (e) => {
+
+    submitMethod = "create";
+
     resetForm("#formTag");
     $("#modalTag").modal("show");
     $(".modalTitle").html('<i class="fa fa-plus"></i> Create');
