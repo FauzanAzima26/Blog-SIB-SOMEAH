@@ -22,14 +22,14 @@ class articleService {
             ->with('category:id,name', 'tags:id,name')
             ->offset($start)
             ->limit($limit)
-            ->get(['uuid', 'title', 'category_id', 'views', 'published']);
+            ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
         }else{
             $data = Article::filter(request()->search['value'])
             ->latest()
             ->with('category:id,name', 'tags:id,name')
             ->offset($start)
             ->limit($limit)
-            ->get(['uuid', 'title', 'category_id', 'views', 'published']);
+            ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
 
             $totalFiltered = $data->count();
         }
@@ -65,11 +65,11 @@ class articleService {
                 }
             })
             ->addColumn('tag_id', function ($row) {
-                $tagHtml = '';
+                $tagHTML = '';
                 foreach ($row->tags as $tag) {
-                    $tagHtml .= '<span class="badge bg-primary text-white">' . $tag->name . '</span>';
+                    $tagHTML .= '<span class="badge bg-primary text-white">' . $tag->name . '</span>';
                 }
-                return $tagHtml;
+                return $tagHTML;
             })
             ->rawColumns(['action', 'category_id', 'published', 'tag_id'])
             ->addIndexColumn()
