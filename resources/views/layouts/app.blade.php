@@ -46,12 +46,20 @@
                         <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.article.index') ? 'active' : ''}}">
                             <a class="nav-link {{request()->routeIs('admin.article.index') ? 'active' : ''}}" href="{{ route('admin.article.index') }}">Article</a>
                         </li>
+
+                        @if (Auth()->user()->role == 'owner')
+
                         <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.category.index') ? 'active' : ''}}">
                             <a class="nav-link {{request()->routeIs('admin.category.index') ? 'active' : ''}}" href="{{ route('admin.category.index') }}">Categories</a>
                         </li>
                         <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.tag.index') ? 'active' : ''}}">
                             <a class="nav-link {{request()->routeIs('admin.tag.index') ? 'active' : ''}}" href="{{ route('admin.tag.index') }}">Tag</a>
                         </li>
+                        <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.writer.index') ? 'active' : ''}}">
+                            <a class="nav-link {{request()->routeIs('admin.writer.index') ? 'active' : ''}}" href="{{ route('admin.writer.index') }}">Writer</a>
+                        </li>
+                        
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
