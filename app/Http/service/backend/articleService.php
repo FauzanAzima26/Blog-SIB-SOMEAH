@@ -6,6 +6,7 @@ use App\Models\Tag;
 use App\Models\article;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
 
 class articleService
@@ -44,7 +45,9 @@ class articleService
                         <a href="' . route('admin.article.show', $row->uuid) . '"  class="btn btn-sm btn-primary">
                                 <i class="fas fa-eye"></i>
                             </a>
-                        <button type="button" class="btn btn-sm btn-warning" data-id="' . $row->uuid . '"><i class="fas fa-edit"></i></button>
+                        <a href="' . route('admin.article.edit', $row->uuid) . '"  class="btn btn-sm btn-warning">
+                                <i class="fas fa-edit"></i>
+                            </a>
                         <button type="button" class="btn btn-sm btn-danger" onclick="destroyArticle(this)" data-id="' . $row->uuid . '"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>';
@@ -115,5 +118,34 @@ class articleService
     public function getTag()
     {
         return Tag::latest()->get(['id', 'name']);
+    }
+
+    public function delete(string $id)
+    {
+        $getArticle = $this->getFirstBy('uuid', $id);
+
+        Storage::disk('public')->delete('images/' . $getArticle->image);
+
+        $getArticle->tags()->detach();
+        // $getArticle->tags()->updateExistingPivot($getArticle->tags, ['deleted_at' => now()]); // soft delete
+        $getArticle->delete(); // soft delete
+
+        return $getArticle;
+    }
+
+    public function update(array $data, string $id)
+    {
+        $data['slug'] = Str::slug($data['title']);
+
+        if ($data['published'] == 1) {
+            $data['published_at'] = date('Y-m-d');
+        }
+
+        // insert article_tag
+        $article = Article::where('uuid', $id)->firstOrFail();
+        $article->update($data);
+        $article->tags()->sync($data['tag_id']);
+
+        return $article;
     }
 }

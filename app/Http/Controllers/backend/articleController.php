@@ -76,15 +76,41 @@ class articleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $article = $this->articleService->getFirstBy('uuid', $id, true);
+
+        return view('backend.article.edit', [
+            'article' => $article,
+            'categories' => $this->articleService->getCategory(),
+            'tags' => $this->articleService->getTag()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(articleRequest $request, string $id)
     {
-        //
+        $data = $request->validated();
+
+        $getArticle = $this->articleService->getFirstBy('uuid', $id);
+
+        try {
+           if ($request->hasFile('image')) {
+                $data['image'] = $this->imageService->storeImage($data, $getArticle->image);
+           }
+
+            $this->articleService->update($data, $id);
+
+            return response()->json([
+                'message' => 'Data Artikel Berhasil Diubah...'
+            ]);
+        } catch (\Exception $error) {
+            $this->imageService->deleteImage($data['image'], 'images');
+
+            return response()->json([
+                'message' => 'Data Artikel Gagal Diubah...' . $error->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -92,11 +118,17 @@ class articleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // $article = $this->articleService->getFirstBy('uuid', $id, true);
+
+        // Gate::authorize('view', $article);
+
+        $this->articleService->delete($id);
+
+        return response()->json(['message' => 'Data Artikel Berhasil Dihapus...']);
     }
 
     public function getData(){
 
-        return $this->articleService->serverSide();
+        return $this->articleService->serverSide(); 
     }
 }
