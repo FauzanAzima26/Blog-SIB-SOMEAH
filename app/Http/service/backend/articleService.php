@@ -2,12 +2,15 @@
 
 namespace App\Http\service\backend;
 
+use App\Models\Tag;
 use App\Models\article;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
-class articleService {
+class articleService
+{
 
     public function serverSide()
     {
@@ -17,19 +20,19 @@ class articleService {
         $limit = request()->length;
         $start = request()->start;
 
-        if(empty(request()->search['value'])) {
+        if (empty(request()->search['value'])) {
             $data = Article::latest()
-            ->with('category:id,name', 'tags:id,name')
-            ->offset($start)
-            ->limit($limit)
-            ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
-        }else{
+                ->with('category:id,name', 'tags:id,name')
+                ->offset($start)
+                ->limit($limit)
+                ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
+        } else {
             $data = Article::filter(request()->search['value'])
-            ->latest()
-            ->with('category:id,name', 'tags:id,name')
-            ->offset($start)
-            ->limit($limit)
-            ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
+                ->latest()
+                ->with('category:id,name', 'tags:id,name')
+                ->offset($start)
+                ->limit($limit)
+                ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
 
             $totalFiltered = $data->count();
         }
@@ -39,7 +42,10 @@ class articleService {
                 $btn =
                     '<div class="text-center" width="10%>
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-warning" onclick="editArticle(this)" data-id="' . $row->uuid . '"><i class="fas fa-edit"></i></button>
+                        <a href="' . route('admin.article.show', $row->uuid) . '"  class="btn btn-sm btn-primary">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        <button type="button" class="btn btn-sm btn-warning" data-id="' . $row->uuid . '"><i class="fas fa-edit"></i></button>
                         <button type="button" class="btn btn-sm btn-danger" onclick="destroyArticle(this)" data-id="' . $row->uuid . '"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>';
@@ -53,7 +59,7 @@ class articleService {
             ->setOffset($start)
             ->editColumn('category_id', function ($row) {
                 return '<div>
-                <span class="badge bg-primary text-white">' . $row->category->name .'</span></div>';
+                <span class="badge bg-primary text-white">' . $row->category->name . '</span></div>';
             })
             ->editColumn('published', function ($row) {
                 if ($row->published == 1) {
@@ -67,12 +73,48 @@ class articleService {
             ->addColumn('tag_id', function ($row) {
                 $tagHTML = '';
                 foreach ($row->tags as $tag) {
-                    $tagHTML .= '<span class="badge bg-primary text-white">' . $tag->name . '</span>';
+                    $tagHTML .= '<span class="badge bg-primary text-white me-1">' . $tag->name . '</span>';
                 }
                 return $tagHTML;
             })
             ->rawColumns(['action', 'category_id', 'published', 'tag_id'])
             ->addIndexColumn()
             ->make(true);
+    }
+
+    public function getFirstBy(string $column, string $value, bool $relation = false)
+    {
+        if ($relation == true && auth()->user()->hasRole('owner')) {
+            return Article::with('user:id,name', 'category:id,name', 'tags:id,name')->where($column, $value)->withTrashed()->firstOrFail();
+        } elseif ($relation == false && auth()->user()->hasRole('owner')) {
+            return Article::where($column, $value)->withTrashed()->firstOrFail();
+        } else {
+            return Article::where($column, $value)->firstOrFail();
+        }
+    }
+
+    public function create(array $data)
+    {
+        $data['slug'] = Str::slug($data['title']);
+
+        if ($data['published'] == 1) {
+            $data['published_at'] = date('Y-m-d');
+        }
+
+        // insert article_tag
+        $article = Article::create($data);
+        $article->tags()->sync($data['tag_id']);
+
+        return $article;
+    }
+
+    public function getCategory()
+    {
+        return Category::latest()->get(['id', 'name']);
+    }
+
+    public function getTag()
+    {
+        return Tag::latest()->get(['id', 'name']);
     }
 }

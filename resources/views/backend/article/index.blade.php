@@ -18,10 +18,6 @@
     <script src="//cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
     <script src="{{asset('assets/backend/js/helper.js')}}"></script>
     <script src="{{asset('assets/backend/js/article.js')}}"></script>
-    <!-- Laravel Javascript Validation -->
-    <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js')}}"></script>
-    {!! JsValidator::formRequest('App\Http\Requests\articleRequest') !!}
-
 
 @endpush
 
@@ -31,7 +27,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10">
             <x-card icon="alt" title="Articles">
-                <button class="btn btn-primary" onclick="modalTag(this)">Create</button>
+                <a href="{{route('admin.article.create')}}" class="btn btn-primary">Create</a>
                 <div class="table-responsive-sm">
                     <table class="table table-striped table-bordered" id="example">
                         <thead>

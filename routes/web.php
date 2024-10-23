@@ -18,6 +18,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     ->except(['create', 'edit']);
     Route::get('tag-serverside', [tagController::class, 'getData'])->name('admin.tag.serverside');
 
+    // article
     Route::resource('article', articleController::class)->names('admin.article');
     Route::get('article-serverside', [articleController::class, 'getData'])->name('admin.article.serverside');
 });

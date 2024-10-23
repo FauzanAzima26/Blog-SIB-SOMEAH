@@ -23,7 +23,15 @@ class articleRequest extends FormRequest
     {
         $route = $this->route('article');
         return [
-            'name' => 'required|string|min:3|max:255|unique:categories,name,' . $route . ',uuid',
+            'title' => 'required|string|min:3|max:255|unique:categories,name,' . $route . ',uuid',
+            "slug" => "nullable",
+            "content" => "required",
+            "published" => "required|in:0,1",
+            "category_id" => "required|exists:categories,id",
+            "tag_id" => "required|array",
+            "tag_id.*" => "required|exists:tags,id",
+            "keywords" => "required|min:3",
+            "image" => $this->isMethod('POST') ? "required|file|image|max:2048|mimes:png,jpg,jpeg,webp|mimetypes:image/png,image/jpg,image/jpeg,image/webp" : "nullable|file|image|max:2048|mimes:png,jpg,jpeg,webp|mimetypes:image/png,image/jpg,image/jpeg,image/webp",
         ];
     }
 }

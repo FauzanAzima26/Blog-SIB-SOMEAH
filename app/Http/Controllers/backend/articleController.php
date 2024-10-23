@@ -5,11 +5,17 @@ namespace App\Http\Controllers\backend;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\articleRequest;
+use App\Http\service\backend\imageService;
 use App\Http\service\backend\articleService;
 
 class articleController extends Controller
 {
-    public function __construct(private articleService $articleService){}
+    public function __construct(
+        private articleService $articleService,
+        private imageService $imageService
+        ){}
     
     public function index()
     {
@@ -21,15 +27,34 @@ class articleController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.article.create', [
+            'categories' => $this->articleService->getCategory(),
+            'tags' => $this->articleService->getTag()
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(articleRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        try {
+            $data['image'] = $this->imageService->storeImage($data);
+
+            $this->articleService->create($data);
+
+            return response()->json([
+                'message' => 'Data Artikel Berhasil Ditambahkan...'
+            ]);
+        } catch (\Exception $error) {
+            $this->imageService->deleteImage($data['image'], 'images');
+
+            return response()->json([
+                'message' => 'Data Artikel Gagal Ditambahkan...' . $error->getMessage()
+            ]);
+        }
     }
 
     /**
@@ -37,7 +62,13 @@ class articleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $article = $this->articleService->getFirstBy('uuid', $id);
+        
+
+
+        return view('backend.article.show', [
+            'article' => $article,
+        ]);
     }
 
     /**
