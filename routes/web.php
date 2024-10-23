@@ -12,6 +12,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('category', categoryController::class)->names('admin.category')
         ->except(['create', 'edit']);
     Route::get('serverside', [categoryController::class, 'getData'])->name('admin.category.serverside');
+    Route::post('category/import', [categoryController::class, 'import'])->name('admin.category.import');
 
     // tag
     Route::resource('tag', tagController::class)->names('admin.tag')

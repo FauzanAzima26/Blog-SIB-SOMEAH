@@ -31,6 +31,23 @@
         <div class="col-md-10">
             <x-card icon="list" title="Categories">
                 <button class="btn btn-primary" onclick="modalCategory(this)">Create</button>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modalImport"><i
+                        class="fas fa-file-excel"></i> Import</button>
+
+                @session('success')
+                    <div class="alert alert-success alert-dismissible fade show mt-2" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {{ session('success') }}
+                    </div>
+                @endsession
+
+                @session('error')
+                    <div class="alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {{ session('error') }}
+                    </div>
+                @endsession
+
                 <div class="table-responsive-sm">
                     <table class="table table-striped table-bordered" id="example">
                         <thead>
@@ -52,5 +69,6 @@
 </div>
 
 @include('backend.category._modal')
+@include('backend.category._modalDowload')
 
 @endsection

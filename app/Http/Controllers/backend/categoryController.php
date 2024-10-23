@@ -4,10 +4,12 @@ namespace App\Http\Controllers\backend;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Imports\categoryImport;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\categoryRequest;
-use App\Http\service\backend\categoryService;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\service\backend\categoryService;
 
 class categoryController extends Controller
 {
@@ -101,5 +103,21 @@ class categoryController extends Controller
     {
 
         return $this->categoryService->serverSide();
+    }
+
+    public function import(Request $request)
+    {
+        try {
+            $request->validate([
+                'file_import' => 'required|mimes:csv,xls,xlsx'
+            ]);
+
+            // import class
+            Excel::import(new categoryImport, $request->file('file_import'));
+
+            return redirect()->back()->with('success', 'Import Data Kategori Berhasil!');
+        } catch (\Exception $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }
