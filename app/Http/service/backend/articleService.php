@@ -6,7 +6,6 @@ use App\Models\Tag;
 use App\Models\article;
 use App\Models\Category;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class articleService
@@ -84,10 +83,10 @@ class articleService
 
     public function getFirstBy(string $column, string $value, bool $relation = false)
     {
-        if ($relation == true && auth()->user()->hasRole('owner')) {
-            return Article::with('user:id,name', 'category:id,name', 'tags:id,name')->where($column, $value)->withTrashed()->firstOrFail();
-        } elseif ($relation == false && auth()->user()->hasRole('owner')) {
-            return Article::where($column, $value)->withTrashed()->firstOrFail();
+        if ($relation == true) {
+            return Article::with('user:id,name', 'category:id,name', 'tags:id,name')->where($column, $value)->firstOrFail();
+        } elseif ($relation == false) {
+            return Article::where($column, $value)->firstOrFail();
         } else {
             return Article::where($column, $value)->firstOrFail();
         }
