@@ -43,7 +43,7 @@ class writerService {
                     $actionBtn = '
                     <div class="text-center" width="10%">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-success" onclick="editData(this)" data-id="' . $data->id . '">
+                            <button type="button" class="btn btn-sm btn-warning me-2" onclick="editData(this)" data-id="' . $data->id . '">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button type="button" class="btn btn-sm btn-danger" onclick="deleteData(this)" data-id="' . $data->id . '">
