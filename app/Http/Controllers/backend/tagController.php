@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\backend;
 
-use App\Models\Tag;
-use Illuminate\Http\Request;
 use App\Http\Requests\tagRequest;
+use App\Http\Controllers\Controller;
 use App\Http\service\backend\tagService;
-use Yajra\DataTables\Facades\DataTables;
 
 class tagController extends Controller
 {

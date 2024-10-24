@@ -2,12 +2,12 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\tagController;
+use App\Http\Controllers\backend\tagController;
 use App\Http\Controllers\backend\writerController;
 use App\Http\Controllers\backend\articleController;
 use App\Http\Controllers\backend\categoryController;
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->middleware('auth')->group(function () {
 
     // category
     Route::resource('category', categoryController::class)->names('admin.category')

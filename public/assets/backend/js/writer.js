@@ -70,10 +70,10 @@ const editData = (e) => {
             $("#id").val(parsedData.uuid);
             $("#name").val(parsedData.name);
             $("#modalTag").modal("show");
-            $(".modal-title").html('<i class="fa fa-edit"></i> Edit Tag');
-            $(".btnSubmit").html('<i class="fa fa-save"></i> Save');
+            $(".modalTitle").html('<i class="fa fa-edit"></i> Edit');
+            $(".btnSubmit").html('<i class="fa fa-save"></i> Update');
 
-            submit_method = "edit";
+            submitMethod = "edit";
 
             stopLoading();
         },

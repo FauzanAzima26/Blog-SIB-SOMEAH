@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class writerMiddleware
+class ownerMiddleware
 {
     /**
      * Handle an incoming request.
@@ -15,10 +15,10 @@ class writerMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // check yang login penulis dan harus verified
-        if ($request->user()->hasRole('writer') && !auth()->user()->is_verified) {
-            return response()->view('backend.writer.unverified', ['owner_email' => 'ilhamlutfi@gmail.com'], 403);
-        }
-        return $next($request);
+        // check yang login harus/jika bukan owner
+        if (!$request->user()->hasRole('owner')) {
+            abort(403);
+         }
+         return $next($request);
     }
 }

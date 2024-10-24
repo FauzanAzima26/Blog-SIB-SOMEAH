@@ -40,6 +40,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
+                        @auth
                         <li class="nav-item btn btn-light btn-sm">
                             <a class="nav-link" href="{{ route('login') }}">Dashboard</a>
                         </li>
@@ -55,11 +56,14 @@
                         <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.tag.index') ? 'active' : ''}}">
                             <a class="nav-link {{request()->routeIs('admin.tag.index') ? 'active' : ''}}" href="{{ route('admin.tag.index') }}">Tag</a>
                         </li>
+
                         <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.writer.index') ? 'active' : ''}}">
                             <a class="nav-link {{request()->routeIs('admin.writer.index') ? 'active' : ''}}" href="{{ route('admin.writer.index') }}">Writer</a>
                         </li>
                         
                         @endif
+
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->

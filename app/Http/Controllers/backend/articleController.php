@@ -15,7 +15,7 @@ class articleController extends Controller
     public function __construct(
         private articleService $articleService,
         private imageService $imageService
-        ){}
+        ){ $this->middleware('writer'); }
     
     public function index()
     {

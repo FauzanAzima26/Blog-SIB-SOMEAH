@@ -24,13 +24,13 @@ class tagService {
             $data = Tag::latest()
             ->offset($start)
             ->limit($limit)
-            ->get(['uuid', 'name', 'slug']);
+            ->get(['id', 'uuid', 'name', 'slug']);
         }else{
             $data = Tag::filter(request()->search['value'])
             ->latest()
             ->offset($start)
             ->limit($limit)
-            ->get(['uuid', 'name', 'slug']);
+            ->get(['id', 'uuid', 'name', 'slug']);
 
             $totalFiltered = $data->count();
         }
@@ -63,7 +63,7 @@ class tagService {
         return Tag::create($data);
     }
 
-    public function getFirstBy($columns, $value){
+    public function getFirstBy(string $columns, string $value){
 
         return Tag::where($columns, $value)->firstOrFail();
     }
