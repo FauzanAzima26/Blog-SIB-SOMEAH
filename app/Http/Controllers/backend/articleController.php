@@ -15,8 +15,10 @@ class articleController extends Controller
     public function __construct(
         private articleService $articleService,
         private imageService $imageService
-        ){ $this->middleware('writer'); }
-    
+    ) {
+        $this->middleware('writer');
+    }
+
     public function index()
     {
         return view('backend.article.index');
@@ -63,7 +65,7 @@ class articleController extends Controller
     public function show(string $id)
     {
         $article = $this->articleService->getFirstBy('uuid', $id);
-        
+
 
 
         return view('backend.article.show', [
@@ -95,9 +97,9 @@ class articleController extends Controller
         $getArticle = $this->articleService->getFirstBy('uuid', $id);
 
         try {
-           if ($request->hasFile('image')) {
+            if ($request->hasFile('image')) {
                 $data['image'] = $this->imageService->storeImage($data, $getArticle->image);
-           }
+            }
 
             $this->articleService->update($data, $id);
 
@@ -127,8 +129,23 @@ class articleController extends Controller
         return response()->json(['message' => 'Data Artikel Berhasil Dihapus...']);
     }
 
-    public function getData(){
+    public function getData()
+    {
 
-        return $this->articleService->serverSide(); 
+        return $this->articleService->serverSide();
+    }
+
+    public function restore($id)
+    {
+
+        $this->articleService->restore($id);
+        return redirect()->back()->with('success', 'Data Artikel Berhasil Dikembalikan...');
+    }
+
+    public function forceDelete(string $id)
+    {
+        $this->articleService->forceDelete($id);
+
+        return response( )->json(['message' => 'Data Artikel Berhasil Dihapus...', 'redirect' => route('admin.article.index')]);
     }
 }

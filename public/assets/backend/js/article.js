@@ -63,3 +63,49 @@ const destroyArticle = (e) => {
         }
     })
 }
+
+const deleteForceData = (e) => {
+    let id = e.getAttribute('data-id');
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to delete permanently this article?",
+        icon: "question",
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Delete",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        showCancelButton: true,
+        showCloseButton: true
+    }).then((result) => {
+        if (result.value) {
+            startLoading();
+
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "DELETE",
+                url: "/admin/article/force-delete/" + id,
+                dataType: "json",
+                success: function (response) {
+                    stopLoading();
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: "Success!",
+                        text: response.message,
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/admin/article';
+                        }
+                    })
+                },
+                error: function (response) {
+                    console.log(response);
+                }
+            });
+        }
+    })
+}

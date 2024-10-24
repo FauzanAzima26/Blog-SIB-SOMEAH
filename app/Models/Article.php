@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Models\Tag;
 use App\Models\User;
 use App\Models\Category;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+    use SoftDeletes;
     protected $fillable = [
         'id',
         'uuid',
