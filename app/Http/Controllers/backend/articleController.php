@@ -66,7 +66,7 @@ class articleController extends Controller
     {
         $article = $this->articleService->getFirstBy('uuid', $id);
 
-
+        Gate::authorize('view', $article);
 
         return view('backend.article.show', [
             'article' => $article,
@@ -79,6 +79,8 @@ class articleController extends Controller
     public function edit(string $id)
     {
         $article = $this->articleService->getFirstBy('uuid', $id, true);
+
+        Gate::authorize('view', $article);
 
         return view('backend.article.edit', [
             'article' => $article,
@@ -120,9 +122,9 @@ class articleController extends Controller
      */
     public function destroy(string $id)
     {
-        // $article = $this->articleService->getFirstBy('uuid', $id, true);
+        $article = $this->articleService->getFirstBy('uuid', $id, true);
 
-        // Gate::authorize('view', $article);
+        Gate::authorize('view', $article);
 
         $this->articleService->delete($id);
 
@@ -138,12 +140,19 @@ class articleController extends Controller
     public function restore($id)
     {
 
+        $article = $this->articleService->getFirstBy('uuid', $id, true);
+        Gate::authorize('view', $article);
+
         $this->articleService->restore($id);
         return redirect()->back()->with('success', 'Data Artikel Berhasil Dikembalikan...');
     }
 
     public function forceDelete(string $id)
     {
+        $article = $this->articleService->getFirstBy('uuid', $id, true);
+        
+        Gate::authorize('view', $article);
+
         $this->articleService->forceDelete($id);
 
         return response( )->json(['message' => 'Data Artikel Berhasil Dihapus...', 'redirect' => route('admin.article.index')]);
