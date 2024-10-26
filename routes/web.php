@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\backend\tagController;
+use App\Http\Controllers\frontend\homeController;
 use App\Http\Controllers\backend\writerController;
 use App\Http\Controllers\backend\articleController;
 use App\Http\Controllers\backend\categoryController;
@@ -35,6 +36,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 Auth::routes();
 
+Route::get('/', [homeController::class, 'index'])->name('frontend.home');
 
-
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('article', articleController::class)
+    ->only('index', 'show')
+    ->names('article');
