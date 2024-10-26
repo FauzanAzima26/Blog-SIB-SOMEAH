@@ -47,7 +47,8 @@
                         </div>
                         <div class="col-md-6">
                             <div class="d-flex flex-column">
-                                <a href="{{ route('article.show', $top_view->slug) }}" class="h3">{{ $top_view->title }}</a>
+                                <a href="{{ route('article.show', $top_view->slug) }}"
+                                    class="h3">{{ $top_view->title }}</a>
                                 <p class="mb-0 fs-5"><i class="fa fa-eye"> {{ $top_view->views }} Views</i></p>
                                 <p class="mb-0 fs-5"><i class="fa fa-folder"> {{ $top_view->category->name }}</i></p>
                                 <p class="mb-0 fs-5">
@@ -73,7 +74,7 @@
 
                             <div class="rounded overflow-hidden">
                                 <a href="https://www.domainesia.com/cloud-vps/?promo=cloudhandal" target="_blank">
-                                    <img src="{{ asset('assets/frontend') }}/img/promo-domainesia.jpg"
+                                    <img src="{{ asset('assets/frontend') }}/img/newsletter-1.jpg"
                                         class="img-fluid rounded w-100" alt="promo hosting cloud vps">
                                 </a>
                             </div>

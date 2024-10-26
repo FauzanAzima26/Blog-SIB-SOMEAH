@@ -7,6 +7,8 @@ use App\Http\Controllers\frontend\homeController;
 use App\Http\Controllers\backend\writerController;
 use App\Http\Controllers\backend\articleController;
 use App\Http\Controllers\backend\categoryController;
+use App\Http\Controllers\frontend\articleController as frontendArticleController;
+use App\Http\Controllers\frontend\categoryController as frontendCategoryController;
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
@@ -38,6 +40,10 @@ Auth::routes();
 
 Route::get('/', [homeController::class, 'index'])->name('frontend.home');
 
-Route::resource('article', articleController::class)
+Route::resource('article', frontendArticleController::class)
     ->only('index', 'show')
     ->names('article');
+
+Route::resource('category', frontendCategoryController::class)
+->only('index', 'show')
+->names('category');

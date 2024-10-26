@@ -36,7 +36,6 @@ class homeController extends Controller
             ->limit(6) // membatasi hanya 6
             ->get();
 
-
      return view('frontend.home.index', [
          'main_post' => $main_post,
          'top_view' => $top_view,

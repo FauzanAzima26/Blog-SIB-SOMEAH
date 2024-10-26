@@ -28,7 +28,7 @@ class articleController extends Controller
         $article = $this->articleService->getFirstBy('slug', $slug, true);
 
         if ($article == null) {
-            return view('frontend.custom-error.404', [
+            return view('frontend.error.404', [
                 'url' => url('/article/' . $slug),
             ]);
         }

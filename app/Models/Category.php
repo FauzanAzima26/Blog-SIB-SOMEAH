@@ -26,4 +26,9 @@ class Category extends Model
         return Category::where('name', 'like', "%{$search}%")
         ->orWhere('slug', 'like', "%{$search}%");
     }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }
