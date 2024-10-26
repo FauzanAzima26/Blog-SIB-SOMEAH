@@ -50,7 +50,7 @@
                             <div class="navbar-nav mx-auto border-top">
                                 <a href="#" class="nav-item nav-link active">Home</a>
 
-                                <a href="#" class="nav-item nav-link">Articles</a>
+                                <a href="{{route('article.index')}}" class="nav-item nav-link">Articles</a>
 
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>

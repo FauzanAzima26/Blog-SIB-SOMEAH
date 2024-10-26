@@ -7,9 +7,10 @@ use App\Http\Controllers\frontend\homeController;
 use App\Http\Controllers\backend\writerController;
 use App\Http\Controllers\backend\articleController;
 use App\Http\Controllers\backend\categoryController;
+use App\Http\Controllers\frontend\sitemapController;
+use App\Http\Controllers\frontend\tagController as frontendTagController;
 use App\Http\Controllers\frontend\articleController as frontendArticleController;
 use App\Http\Controllers\frontend\categoryController as frontendCategoryController;
-use App\Http\Controllers\frontend\tagController as frontendTagController;
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
@@ -50,3 +51,5 @@ Route::resource('category', frontendCategoryController::class)
 ->names('category');
 
 Route::get('tag/{slug}', [frontendTagController::class, 'showByTag'])->name('frontend.tag');
+
+Route::get('sitemap.xml', [sitemapController::class, 'index'])->name('sitemap');
