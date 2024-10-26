@@ -23,4 +23,9 @@ class Tag extends Model
         return Tag::where('name', 'like', "%{$search}%")
         ->orWhere('slug', 'like', "%{$search}%");
     }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }

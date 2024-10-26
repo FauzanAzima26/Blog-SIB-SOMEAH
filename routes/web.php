@@ -9,6 +9,7 @@ use App\Http\Controllers\backend\articleController;
 use App\Http\Controllers\backend\categoryController;
 use App\Http\Controllers\frontend\articleController as frontendArticleController;
 use App\Http\Controllers\frontend\categoryController as frontendCategoryController;
+use App\Http\Controllers\frontend\tagController as frontendTagController;
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
@@ -47,3 +48,5 @@ Route::resource('article', frontendArticleController::class)
 Route::resource('category', frontendCategoryController::class)
 ->only('index', 'show')
 ->names('category');
+
+Route::get('tag/{slug}', [frontendTagController::class, 'showByTag'])->name('frontend.tag');

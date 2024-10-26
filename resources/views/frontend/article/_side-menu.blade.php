@@ -10,12 +10,14 @@
                 <h4 class="mb-4">Categories</h4>
                 <div class="row g-2">
          
+                @foreach ($categories as $category)
                         <div class="col-12">
-                            <a href="#"
+                            <a href="{{ route('category.show', $category->slug) }}"
                                 class="link-hover btn btn-light w-100 rounded text-uppercase text-dark py-3">
-                                
+                                {{ $category->name }} ({{ $category->total_articles }})
                             </a>
                         </div>
+                    @endforeach
            
                 </div>
 
@@ -40,33 +42,34 @@
                 <h4 class="my-4">Popular Articles</h4>
                 <div class="row g-4">
                    
+                @foreach ($popular_articles as $articles)
                         <div class="col-12">
                             <div class="row g-4 align-items-center features-item">
                                 <div class="col-4">
                                     <div class="rounded-circle position-relative">
                                         <div class="overflow-hidden rounded-circle">
-                                            <img src="#"
-                                                class="img-zoomin img-fluid rounded w-100" >
+                                            <img src="{{ asset('storage/images/'.$articles->image) }}"
+                                                class="img-zoomin img-fluid rounded w-100" alt="{{ $articles->title }}">
                                         </div>
                                         <span
                                             class="rounded-circle border border-2 border-white bg-primary btn-sm-square text-white position-absolute"
-                                            style="top: 10%; right: -10px;">dceacf</span>
+                                            style="top: 10%; right: -10px;">{{ $articles->views }}</span>
                                     </div>
                                 </div>
                                 <div class="col-8">
                                     <div class="features-content d-flex flex-column">
-                                        <p class="text-uppercase mb-2">dcfdc</p>
-                                        <a href="#" class="h6">
-                                           sdsc
+                                        <p class="text-uppercase mb-2">{{ $articles->category->name }}</p>
+                                        <a href="{{ route('article.show', $articles->slug) }}" class="h6">
+                                           {{ $articles->title }}
                                         </a>
                                         <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i>
-                                            {{ date('d M Y') }}
+                                            {{ date('d M Y', strtotime($articles->published_at)) }}
                                         </small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                 
+                    @endforeach
 
                     <div class="col-lg-12">
                         <div class="border-bottom my-3 pb-3">
@@ -74,11 +77,13 @@
                         </div>
                         <ul class="nav nav-pills d-inline-flex text-center mb-4">
      
+                        @foreach ($tags as $tag)
                             <li class="nav-item mb-3">
-                                <a class="d-flex py-2 bg-light rounded-pill me-2" href="$#">
-                                    <span class="text-dark link-hover" style="width: 90px;">hjsbk</span>
+                                <a class="d-flex py-2 bg-light rounded-pill me-2" href="{{ route('frontend.tag', $tag->slug) }}">
+                                    <span class="text-dark link-hover" style="width: 90px;">#{{ $tag->name }}</span>
                                 </a>
                             </li>
+                            @endforeach
              
                         </ul>
                     </div>

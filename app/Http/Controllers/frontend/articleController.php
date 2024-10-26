@@ -36,9 +36,6 @@ class articleController extends Controller
         // add view
         $article->increment('views');
 
-        // get category
-        $categories = $this->categoryService->randomCategory();
-
         return view('frontend.article.show', [
             'article' => $article,
             'related_articles' => $this->articleService->relatedArticles($article->slug),
