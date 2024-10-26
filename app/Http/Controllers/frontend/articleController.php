@@ -3,13 +3,45 @@
 namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\service\frontend\articleService;
+use App\Http\service\frontend\categoryService;
 
 class articleController extends Controller
 {
+    public function __construct(
+        private articleService $articleService,
+        private categoryService $categoryService    
+    ){}
 
-    public function show()
+    public function index()
     {
-        return 'hello';
+        $articles = $this->articleService->all();
+
+        return view('frontend.article.index', [
+            'articles' => $articles,
+        ]);
+    }
+
+    public function show(string $slug)
+    {
+        // eloquent
+        $article = $this->articleService->getFirstBy('slug', $slug, true);
+
+        if ($article == null) {
+            return view('frontend.custom-error.404', [
+                'url' => url('/article/' . $slug),
+            ]);
+        }
+
+        // add view
+        $article->increment('views');
+
+        // get category
+        $categories = $this->categoryService->randomCategory();
+
+        return view('frontend.article.show', [
+            'article' => $article,
+            'related_articles' => $this->articleService->relatedArticles($article->slug),
+        ]);
     }
 }
