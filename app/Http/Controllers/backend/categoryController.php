@@ -16,6 +16,7 @@ class categoryController extends Controller
     public function __construct(
         private categoryService $categoryService
     ) {
+        $this->middleware('owner');
     }
 
     public function index()

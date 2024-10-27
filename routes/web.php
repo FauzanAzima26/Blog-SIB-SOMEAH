@@ -14,6 +14,11 @@ use App\Http\Controllers\frontend\categoryController as frontendCategoryControll
 
 Route::prefix('admin')->middleware('auth')->group(function () {
 
+    // dashboard
+    Route::get('dashboard', function () {
+        return view('home');
+    });
+
     // category
     Route::resource('category', categoryController::class)->names('admin.category')
         ->except(['create', 'edit']);

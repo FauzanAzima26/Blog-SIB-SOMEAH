@@ -9,7 +9,10 @@ use App\Http\service\backend\writerService;
 
 class writerController extends Controller
 {
-    public function __construct(private writerService $writerService){}
+    public function __construct(private writerService $writerService){
+        $this->middleware('owner');
+    }
+    
     public function index()
     {
         return view('backend.writer.index');

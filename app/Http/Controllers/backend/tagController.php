@@ -10,7 +10,7 @@ class tagController extends Controller
 {
     public function __construct(private tagService $tagService)
     {
-        
+        $this->middleware('owner');   
     }
     public function index()
     {
