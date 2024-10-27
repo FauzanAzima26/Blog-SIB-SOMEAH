@@ -38,7 +38,7 @@
     </div>
 </div>
 
-@include('backend.tag._modal')
+@include('backend.writer._modal')
 @endsection
 
 @push('js')
@@ -51,5 +51,5 @@
 
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
 
-    {!! JsValidator::formRequest('App\Http\Requests\TagRequest', '#formTag') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\TagRequest', '#formWriter') !!}
 @endpush

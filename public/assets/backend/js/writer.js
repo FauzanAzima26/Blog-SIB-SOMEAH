@@ -42,3 +42,32 @@ function writerTable() {
         ],
     });
 }
+
+const editData = (e) => {
+    let id = e.getAttribute('data-id');
+
+    startLoading();
+    resetValidation();
+
+    $.ajax({
+        type: "GET",
+        url: "/admin/writer/" + id,
+        success: function (response) {
+            let parsedData = response.data;
+
+            $('#id').val(parsedData.uuid);
+            $('#name').val(parsedData.name);
+            $('#modalWriter').modal('show');
+            $('.modal-title').html('<i class="fa fa-edit"></i> Edit Writer');
+            $('.btnSubmit').html('<i class="fa fa-save"></i> Save');
+
+            submit_method = 'edit';
+
+            stopLoading();
+        },
+        error: function (jqXHR, response) {
+            console.log(jqXHR.responseText);
+            toastError(jqXHR.responseText);
+        }
+    });
+}

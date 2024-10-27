@@ -65,10 +65,10 @@ class writerService {
         }
     }
 
-    // public function getFirstBy(string $column, string $value)
-    // {
-    //     return Writer::where($column, $value)->firstOrFail();
-    // }
+    public function getFirstBy(string $column, string $value)
+    {
+        return User::where($column, $value)->firstOrFail();
+    }
 
     // public function create(array $data)
     // {

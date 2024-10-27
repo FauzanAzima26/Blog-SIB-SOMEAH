@@ -5,11 +5,14 @@ namespace App\Http\Controllers\backend;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\service\backend\tagService;
 use App\Http\service\backend\writerService;
 
 class writerController extends Controller
 {
-    public function __construct(private writerService $writerService){
+    public function __construct(
+        private writerService $writerService,
+        ){
         $this->middleware('owner');
     }
     
@@ -39,7 +42,9 @@ class writerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->json([
+            'data' => $this->writerService->getFirstBy('id', $id)
+        ]);
     }
 
     /**
