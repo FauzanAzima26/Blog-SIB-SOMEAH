@@ -48,16 +48,16 @@
                         </button>
                         <div class="collapse navbar-collapse bg-light py-3" id="navbarCollapse">
                             <div class="navbar-nav mx-auto border-top">
-                                <a href="#" class="nav-item nav-link active">Home</a>
+                                <a href="{{route('frontend.home')}}" class="nav-item nav-link {{request()->routeIs('frontend.home') ? 'active' : ''}}">Home</a>
 
-                                <a href="{{route('article.index')}}" class="nav-item nav-link">Articles</a>
+                                <a href="{{route('article.index')}}" class="nav-item nav-link {{request()->routeIs('article.index') ? 'active' : ''}}">Articles</a>
 
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>
                                     <div class="dropdown-menu m-0 bg-secondary rounded-0">
-                                        <a href="#" class="dropdown-item">Laravel</a>
-                                        <a href="#" class="dropdown-item">Express Js</a>
-                                        <a href="#" class="dropdown-item">Adonis Js</a>
+                                        <a href="#" class="dropdown-item">Kesehatan</a>
+                                        <a href="#" class="dropdown-item">Olahraga</a>
+                                        <a href="#" class="dropdown-item">Teknologi</a>
                                         <a href="#" class="dropdown-item">All Category</a>
                                     </div>
                                 </div>
