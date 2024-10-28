@@ -43,8 +43,8 @@ class writerService {
                     $actionBtn = '
                     <div class="text-center" width="10%">
                         <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-warning me-2" onclick="editData(this)" data-id="' . $data->id . '">
-                                <i class="fas fa-edit"></i>
+                            <button type="button" class="btn btn-sm btn-primary me-2" onclick="editData(this)" data-id="' . $data->id . '">
+                                <i class="bi bi-person-check-fill"></i>
                             </button>
                             <button type="button" class="btn btn-sm btn-danger" onclick="deleteData(this)" data-id="' . $data->id . '">
                                 <i class="fas fa-trash-alt"></i>
@@ -76,9 +76,11 @@ class writerService {
     //     return Writer::create($data);
     // }
 
-    // public function update(array $data, string $uuid)
-    // {
-    //     $data['slug'] = Str::slug($data['name']);
-    //     return Writer::where('uuid', $uuid)->update($data);
-    // }
+    public function update(bool $isVerified, string $uuid)
+    {
+        // Jika isVerified adalah true, simpan waktu saat diverifikasi
+        $verificationTime = $isVerified ? now() : null;
+    
+        return User::where('id', $uuid)->update(['is_verified' => $verificationTime]);
+    }
 }

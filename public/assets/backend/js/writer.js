@@ -44,30 +44,53 @@ function writerTable() {
 }
 
 const editData = (e) => {
-    let id = e.getAttribute('data-id');
+    let id = e.getAttribute("data-id");
 
-    startLoading();
-    resetValidation();
+    Swal.fire({
+        title: "Edit Writer",
+        text: "Apakah anda yakin ingin memverifikasi writer ini?",
+        showCancelButton: true,
+        confirmButtonText: "Verify",
+        cancelButtonText: "Cancel",
+        allowOutsideClick: false,
+        showCloseButton: true,
+    }).then((result) => {
+        if (result.isConfirmed) {
+            startLoading();
 
-    $.ajax({
-        type: "GET",
-        url: "/admin/writer/" + id,
-        success: function (response) {
-            let parsedData = response.data;
+            let isVerified = true;
 
-            $('#id').val(parsedData.uuid);
-            $('#name').val(parsedData.name);
-            $('#modalWriter').modal('show');
-            $('.modal-title').html('<i class="fa fa-edit"></i> Edit Writer');
-            $('.btnSubmit').html('<i class="fa fa-save"></i> Save');
-
-            submit_method = 'edit';
-
-            stopLoading();
-        },
-        error: function (jqXHR, response) {
-            console.log(jqXHR.responseText);
-            toastError(jqXHR.responseText);
+            $.ajax({
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
+                        "content"
+                    ),
+                },
+                type: "PUT", // Menggunakan metode PUT untuk mengupdate data
+                url: "/admin/writer/" + id,
+                data: {
+                    is_verified: isVerified, // Mengirimkan status verifikasi
+                },
+                dataType: "json",
+                success: function (response) {
+                    reloadTable(); // Memuat ulang tabel untuk menampilkan data terbaru
+                    toastSuccess(response.message); // Menampilkan pesan sukses
+                },
+                error: function (response) {
+                    // Menampilkan pesan kesalahan jika terjadi error
+                    let errorMessage =
+                        response.responseJSON.message ||
+                        "Terjadi kesalahan saat memperbarui data.";
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: errorMessage,
+                    });
+                },
+                complete: function () {
+                    stopLoading(); // Menghentikan loading
+                },
+            });
         }
     });
-}
+};

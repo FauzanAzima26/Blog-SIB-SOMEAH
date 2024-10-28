@@ -11,13 +11,15 @@
 
 @push('js')
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="//cdn.datatables.net/2.1.8/js/dataTables.js"></script>
-    <script src="//cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="{{asset('assets/backend/js/helper.js')}}"></script>
     <script src="{{asset('assets/backend/js/article.js')}}"></script>
+
+    <!-- Datatables -->
+    <script src="//cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
+    <script src="//cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <script src="//cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.js"></script>
 
 @endpush
 

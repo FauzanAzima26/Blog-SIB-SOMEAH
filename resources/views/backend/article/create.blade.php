@@ -104,7 +104,7 @@
     <script src={{ asset('assets/backend/js/articleEditor.js') }}></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+    <!-- JsValidator -->
     <script type="text/javascript" src="{{ asset('vendor/jsvalidation/js/jsvalidation.js') }}"></script>
-
-    {!! JsValidator::formRequest('App\Http\Requests\ArticleRequest', '#formArticle') !!}
+    {!! JsValidator::formRequest('App\Http\Requests\articleRequest', '#formArticle') !!}
 @endpush

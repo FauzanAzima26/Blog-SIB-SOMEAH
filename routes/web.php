@@ -39,7 +39,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // writer
     Route::get('writer-serverside', [writerController::class, 'getData'])->name('admin.writer.serverside');
     Route::resource('writer', writerController::class)
-        ->only('index', 'show')
+        ->only('index', 'show', 'update')
         ->names('admin.writer');
 });
 
