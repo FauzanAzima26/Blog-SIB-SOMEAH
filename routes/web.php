@@ -47,6 +47,8 @@ Auth::routes();
 
 Route::get('/', [homeController::class, 'index'])->name('frontend.home');
 
+// Frontend Article
+Route::get('article/search', [frontendArticleController::class, 'index'])->name('frontend.article.search');
 Route::resource('article', frontendArticleController::class)
     ->only('index', 'show')
     ->names('article');

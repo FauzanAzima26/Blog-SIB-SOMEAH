@@ -3,14 +3,15 @@
         <div class="col-12">
             <div class="p-3 rounded border">
                 <div class="input-group w-100 mx-auto d-flex mb-4">
-                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                    <span id="search-icon-1" class="btn btn-primary input-group-text p-3"><i
-                            class="fa fa-search text-white"></i></span>
+                    <form action="{{ route('frontend.article.search')}}" method="get" class="w-100">
+                        <input type="search" name="keyword" class="form-control p-3" placeholder="Enter keywords..."
+                            aria-describedby="search-icon-1">
+                    </form>
                 </div>
                 <h4 class="mb-4">Categories</h4>
                 <div class="row g-2">
-         
-                @foreach ($categories as $category)
+
+                    @foreach ($categories as $category)
                         <div class="col-12">
                             <a href="{{ route('category.show', $category->slug) }}"
                                 class="link-hover btn btn-light w-100 rounded text-uppercase text-dark py-3">
@@ -18,7 +19,7 @@
                             </a>
                         </div>
                     @endforeach
-           
+
                 </div>
 
                 <h4 class="my-4">Stay Connected</h4>
@@ -41,14 +42,14 @@
 
                 <h4 class="my-4">Popular Articles</h4>
                 <div class="row g-4">
-                   
-                @foreach ($popular_articles as $articles)
+
+                    @foreach ($popular_articles as $articles)
                         <div class="col-12">
                             <div class="row g-4 align-items-center features-item">
                                 <div class="col-4">
                                     <div class="rounded-circle position-relative">
                                         <div class="overflow-hidden rounded-circle">
-                                            <img src="{{ asset('storage/images/'.$articles->image) }}"
+                                            <img src="{{ asset('storage/images/' . $articles->image) }}"
                                                 class="img-zoomin img-fluid rounded w-100" alt="{{ $articles->title }}">
                                         </div>
                                         <span
@@ -60,7 +61,7 @@
                                     <div class="features-content d-flex flex-column">
                                         <p class="text-uppercase mb-2">{{ $articles->category->name }}</p>
                                         <a href="{{ route('article.show', $articles->slug) }}" class="h6">
-                                           {{ $articles->title }}
+                                            {{ $articles->title }}
                                         </a>
                                         <small class="text-body d-block"><i class="fas fa-calendar-alt me-1"></i>
                                             {{ date('d M Y', strtotime($articles->published_at)) }}
@@ -76,15 +77,16 @@
                             <h4 class="mb-0">Tags</h4>
                         </div>
                         <ul class="nav nav-pills d-inline-flex text-center mb-4">
-     
-                        @foreach ($tags as $tag)
-                            <li class="nav-item mb-3">
-                                <a class="d-flex py-2 bg-light rounded-pill me-2" href="{{ route('frontend.tag', $tag->slug) }}">
-                                    <span class="text-dark link-hover" style="width: 90px;">#{{ $tag->name }}</span>
-                                </a>
-                            </li>
+
+                            @foreach ($tags as $tag)
+                                <li class="nav-item mb-3">
+                                    <a class="d-flex py-2 bg-light rounded-pill me-2"
+                                        href="{{ route('frontend.tag', $tag->slug) }}">
+                                        <span class="text-dark link-hover" style="width: 90px;">#{{ $tag->name }}</span>
+                                    </a>
+                                </li>
                             @endforeach
-             
+
                         </ul>
                     </div>
                     <div class="col-lg-12">

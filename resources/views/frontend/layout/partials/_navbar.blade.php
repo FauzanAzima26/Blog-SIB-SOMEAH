@@ -50,7 +50,7 @@
                             <div class="navbar-nav mx-auto border-top">
                                 <a href="{{route('frontend.home')}}" class="nav-item nav-link {{request()->routeIs('frontend.home') ? 'active' : ''}}">Home</a>
 
-                                <a href="{{route('article.index')}}" class="nav-item nav-link {{request()->routeIs('article.index') ? 'active' : ''}}">Articles</a>
+                                <a href="{{route('article.index')}}" class="nav-item nav-link {{request()->routeIs('article.*') ? 'active' : ''}}">Articles</a>
 
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categories</a>

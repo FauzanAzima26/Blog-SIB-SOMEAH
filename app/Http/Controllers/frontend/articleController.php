@@ -15,10 +15,17 @@ class articleController extends Controller
 
     public function index()
     {
-        $articles = $this->articleService->all();
+        $keyword = request('keyword');
+
+        if ($keyword) {
+            $articles = $this->articleService->search($keyword);
+        } else {
+            $articles = $this->articleService->all();
+        }
 
         return view('frontend.article.index', [
             'articles' => $articles,
+            'keyword' => $keyword ?? null
         ]);
     }
 
