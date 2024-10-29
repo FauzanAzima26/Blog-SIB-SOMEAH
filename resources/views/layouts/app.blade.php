@@ -42,7 +42,7 @@
                     <ul class="navbar-nav me-auto">
                         @auth
                         <li class="nav-item btn btn-light btn-sm">
-                            <a class="nav-link" href="{{ route('login') }}">Dashboard</a>
+                            <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
                         </li>
                         <li class="nav-item btn btn-light btn-sm rounded-pill {{request()->routeIs('admin.article.index') ? 'active' : ''}}">
                             <a class="nav-link {{request()->routeIs('admin.article.index') ? 'active' : ''}}" href="{{ route('admin.article.index') }}">Article</a>

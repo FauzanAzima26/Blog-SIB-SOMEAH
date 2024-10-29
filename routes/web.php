@@ -17,7 +17,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // dashboard
     Route::get('dashboard', function () {
         return view('home');
-    });
+    })->name('admin.dashboard');
 
     // category
     Route::resource('category', categoryController::class)->names('admin.category')
