@@ -20,43 +20,43 @@ class articleService
         $limit = request()->length;
         $start = request()->start;
 
-            if (empty(request()->search['value'])) {
-                if(auth()->user()->hasRole('owner')) {
+        if (empty(request()->search['value'])) {
+            if (auth()->user()->hasRole('owner')) {
                 $data = Article::latest()
                     ->with('category:id,name', 'tags:id,name')
                     ->offset($start)
                     ->limit($limit)
                     ->withTrashed()
                     ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published', 'deleted_at']);
-                } else {
-                    $data = Article::latest()
+            } else {
+                $data = Article::latest()
                     ->with('category:id,name', 'tags:id,name')
                     ->offset($start)
                     ->limit($limit)
                     ->where('user_id', auth()->user()->id)
                     ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published', 'deleted_at']);
-                }
-            } else {
-                if(auth()->user()->hasRole('owner')) {
+            }
+        } else {
+            if (auth()->user()->hasRole('owner')) {
                 $data = Article::filter(request()->search['value'])
                     ->latest()
                     ->with('category:id,name', 'tags:id,name')
                     ->offset($start)
                     ->limit($limit)
                     ->withTrashed()
-                    ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
-                } else {
-                    $data = Article::filter(request()->search['value'])
+                    ->get(['id', 'uuid', 'title', 'category_id', 'views', 'is_confirm', 'published']);
+            } else {
+                $data = Article::filter(request()->search['value'])
                     ->latest()
                     ->with('category:id,name', 'tags:id,name')
                     ->offset($start)
                     ->limit($limit)
                     ->where('user_id', auth()->user()->id)
-                    ->get(['id', 'uuid', 'title', 'category_id', 'views', 'published']);
-                }
-    
-                $totalFiltered = $data->count();
+                    ->get(['id', 'uuid', 'title', 'category_id', 'is_confirm', 'views', 'published']);
             }
+
+            $totalFiltered = $data->count();
+        }
 
         return DataTables::of($data)
             ->addColumn('action', function ($row) {
@@ -93,6 +93,12 @@ class articleService
                     <span class="badge bg-danger text-white">Draft</span></div>';
                 }
             })
+            ->editColumn('is_confirm', function ($row) {
+                return '
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="is_confirm" id="is_confirm_' . $row->id . '" value="1" ' . ($row->is_confirm == 1 ? 'checked' : '') . ' onchange="confirmArticle(this, ' . $row->id . ')">
+                </div>';
+            })
             ->editColumn('title', function ($data) {
                 if (auth()->user()->hasRole('owner') && $data->deleted_at != null) {
                     return '<span class="text-danger">' . $data->title . '</span>';
@@ -107,7 +113,7 @@ class articleService
                 }
                 return $tagHTML;
             })
-            ->rawColumns(['action', 'category_id', 'published', 'tag_id', 'title'])
+            ->rawColumns(['action', 'category_id', 'published', 'tag_id', 'title', 'is_confirm'])
             ->addIndexColumn()
             ->make(true);
     }

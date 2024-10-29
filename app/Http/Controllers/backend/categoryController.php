@@ -102,7 +102,6 @@ class categoryController extends Controller
 
     public function getData()
     {
-
         return $this->categoryService->serverSide();
     }
 

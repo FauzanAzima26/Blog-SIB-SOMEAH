@@ -40,6 +40,7 @@
                                 <th>Tag</th>
                                 <th>Views</th>
                                 <th>Status</th>
+                                <th>Confirm</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

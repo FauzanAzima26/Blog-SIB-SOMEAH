@@ -33,6 +33,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // article
     Route::resource('article', articleController::class)->names('admin.article');
     Route::get('article-serverside', [articleController::class, 'getData'])->name('admin.article.serverside');
+    Route::post('article/confirm', [articleController::class, 'updateConfirmation'])->name('admin.article.confirm');
     Route::get('restore/{uuid}', [articleController::class, 'restore'])->name('admin.article.restore');
     Route::delete('article/force-delete/{uuid}', [articleController::class, 'forceDelete']);
 

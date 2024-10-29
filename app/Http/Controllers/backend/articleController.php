@@ -66,7 +66,7 @@ class articleController extends Controller
     {
         $article = $this->articleService->getFirstBy('uuid', $id);
 
-        Gate::authorize('view', $article);
+        // Gate::authorize('view', $article);
 
         return view('backend.article.show', [
             'article' => $article,
@@ -156,5 +156,40 @@ class articleController extends Controller
         $this->articleService->forceDelete($id);
 
         return response( )->json(['message' => 'Data Artikel Berhasil Dihapus...', 'redirect' => route('admin.article.index')]);
+    }
+
+    public function updateConfirmation(Request $request)
+
+    {
+
+        // Validate the incoming request
+
+        $request->validate([
+
+            'id' => 'required|integer|exists:articles,id', // Ensure the article exists
+
+            'is_confirm' => 'required|boolean',
+
+        ]);
+
+
+        // Find the article by ID and update the confirmation status
+
+        $article = Article::find($request->id);
+
+        if ($article) {
+
+            $article->is_confirm = $request->is_confirm;
+
+            $article->save();
+
+
+            return response()->json(['success' => true, 'message' => 'Status updated successfully.']);
+
+        }
+
+
+        return response()->json(['success' => false, 'message' => 'Article not found.'], 404);
+
     }
 }

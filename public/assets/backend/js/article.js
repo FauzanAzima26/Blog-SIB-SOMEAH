@@ -16,6 +16,7 @@ $(document).ready(function () {
             { data: "tag_id", name: "tag_id" },
             { data: "views", name: "views" },
             { data: "published", name: "published" },
+            { data: "is_confirm", name: "is_confirm" },
             {
                 data: "action",
                 name: "action",
@@ -108,4 +109,24 @@ const deleteForceData = (e) => {
             });
         }
     })
+}
+
+function confirmArticle(checkbox, articleId) {
+    const isConfirmed = checkbox.checked ? 1 : 0;
+
+    fetch('/admin/article/confirm', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // Include CSRF token if using Laravel
+        },
+        body: JSON.stringify({ id: articleId, is_confirm: isConfirmed }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }
