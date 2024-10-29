@@ -17,7 +17,7 @@ class writerMiddleware
     {
         // check yang login penulis dan harus verified
         if ($request->user()->hasRole('writer') && !auth()->user()->is_verified) {
-            return response()->view('backend.writer.unverified', ['owner_email' => 'ilhamlutfi@gmail.com'], 403);
+            return response()->view('backend.writer.unverified', ['owner_email' => 'admin@gmail.com'], 403);
         }
         return $next($request);
     }

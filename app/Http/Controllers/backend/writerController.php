@@ -5,7 +5,7 @@ namespace App\Http\Controllers\backend;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\service\backend\tagService;
+use App\Http\Requests\writerRequest;
 use App\Http\service\backend\writerService;
 
 class writerController extends Controller
@@ -52,34 +52,26 @@ class writerController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(writerRequest $request, string $id)
     {
-        // Validasi input untuk memastikan 'is_verified' ada dan merupakan boolean
-        $request->validate([
-            'is_verified' => 'required|boolean', // Pastikan is_verified ada dan bertipe boolean
-        ]);
+        $data = $request->validated();
 
-        // Ambil data pengguna berdasarkan ID
         $getData = $this->writerService->getFirstBy('id', $id);
 
-        try {
-            // Ambil nilai is_verified dari request
-            $isVerified = $request->input('is_verified');
-
-            // Panggil metode update pada writerService
-            $this->writerService->update($isVerified, $getData->id);
-
-            return response()->json(['message' => 'Data category has been updated successfully!']);
-        } catch (\Exception $e) {
-            return response()->json(['message' => $e->getMessage()], 500); // Kode status 500 untuk error server
+        try{
+            $this->writerService->update($data, $getData->id);
+            return response()->json(['message' => 'Data writer has been updated successfully!']);
+        }catch(\Exception $e){
+            return response()->json(['message' => $e->getMessage()]);
         }
     }
+
     /**
      * Remove the specified resource from storage.
      */

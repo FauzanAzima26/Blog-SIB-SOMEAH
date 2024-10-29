@@ -46,51 +46,67 @@ function writerTable() {
 const editData = (e) => {
     let id = e.getAttribute("data-id");
 
-    Swal.fire({
-        title: "Edit Writer",
-        text: "Apakah anda yakin ingin memverifikasi writer ini?",
-        showCancelButton: true,
-        confirmButtonText: "Verify",
-        cancelButtonText: "Cancel",
-        allowOutsideClick: false,
-        showCloseButton: true,
-    }).then((result) => {
-        if (result.isConfirmed) {
-            startLoading();
+    startLoading();
+    resetForm("#formWriter");
+    resetValidation();
 
-            let isVerified = true;
+    $.ajax({
+        type: "GET",
+        url: "/admin/writer/" + id,
+        success: function (response) {
+            let parsedData = response.data;
 
-            $.ajax({
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr(
-                        "content"
-                    ),
-                },
-                type: "PUT", // Menggunakan metode PUT untuk mengupdate data
-                url: "/admin/writer/" + id,
-                data: {
-                    is_verified: isVerified, // Mengirimkan status verifikasi
-                },
-                dataType: "json",
-                success: function (response) {
-                    reloadTable(); // Memuat ulang tabel untuk menampilkan data terbaru
-                    toastSuccess(response.message); // Menampilkan pesan sukses
-                },
-                error: function (response) {
-                    // Menampilkan pesan kesalahan jika terjadi error
-                    let errorMessage =
-                        response.responseJSON.message ||
-                        "Terjadi kesalahan saat memperbarui data.";
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: errorMessage,
-                    });
-                },
-                complete: function () {
-                    stopLoading(); // Menghentikan loading
-                },
-            });
-        }
+            $("#id").val(parsedData.id);
+            $("#is_verified").val(parsedData.is_verified);
+            $("#modalWriter").modal("show");
+            $(".modalTitle").html('<i class="fa fa-edit"></i> Edit');
+            $(".btnSubmit").html('<i class="fa fa-save"></i> Update');
+
+            submitMethod = "edit";
+
+            stopLoading();
+        },
+        error: function (jqXHR, response) {
+            console.log(jqXHR.responseText);
+            toastError(jqXHR.responseText);
+        },
     });
 };
+
+// saveCreate
+$("#formWriter").on("submit", function (e) {
+    e.preventDefault();
+    startLoading();
+
+    let url, method;
+    url = "/admin/writer";
+    method = "POST";
+
+    const dataInput = new FormData(this);
+
+    if (submitMethod == "edit") {
+        url = "/admin/writer/" + $("#id").val();
+        dataInput.append("_method", "PUT");
+    }
+
+    $.ajax({
+        headers: {
+            "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+        },
+        type: method,
+        url: url,
+        data: dataInput,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            $("#modalWriter").modal("hide");
+            reloadTable();
+            toastSuccess(response.message);
+            resetValidation();
+        },
+        error: function (jqXHR, response) {
+            console.log(response.message);
+            toastError(jqXHR.responseText);
+        },
+    });
+});

@@ -3,7 +3,6 @@
 namespace App\Http\service\backend;
 
 use App\Models\User;
-use App\Models\Writer;
 use Yajra\DataTables\Facades\DataTables;
 
 class writerService {
@@ -76,11 +75,8 @@ class writerService {
     //     return Writer::create($data);
     // }
 
-    public function update(bool $isVerified, string $uuid)
+    public function update(array $data, string $id)
     {
-        // Jika isVerified adalah true, simpan waktu saat diverifikasi
-        $verificationTime = $isVerified ? now() : null;
-    
-        return User::where('id', $uuid)->update(['is_verified' => $verificationTime]);
+        return User::where('id', $id)->update($data);
     }
 }
