@@ -51,7 +51,6 @@ class homeController extends Controller
             return $articles->first(); // Mengambil artikel terbaru dari setiap kategori
         });
 
-
         // Ambil ID artikel terbaru per kategori untuk pengecualian
         $articel_id = $latestArticlePerCategory->pluck('id'); // Ambil ID dari artikel terbaru per kategori
 

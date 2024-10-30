@@ -93,12 +93,19 @@ class articleService
                     <span class="badge bg-danger text-white">Draft</span></div>';
                 }
             })
+
             ->editColumn('is_confirm', function ($row) {
+                if(auth()->user()->hasRole('owner')){   
                 return '
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" name="is_confirm" id="is_confirm_' . $row->id . '" value="1" ' . ($row->is_confirm == 1 ? 'checked' : '') . ' onchange="confirmArticle(this, ' . $row->id . ')">
                 </div>';
+                }else{
+                    return '
+                    <span class="badge bg-success text-white">Confirmed</span>';
+                }
             })
+            
             ->editColumn('title', function ($data) {
                 if (auth()->user()->hasRole('owner') && $data->deleted_at != null) {
                     return '<span class="text-danger">' . $data->title . '</span>';

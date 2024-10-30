@@ -19,12 +19,12 @@ class writerService {
             if (empty(request()->search['value'])) {
                 $data = User::offset($start)
                     ->limit($limit)
-                    ->get(['id', 'name', 'email', 'created_at', 'is_verified']);
+                    ->get(['id', 'name', 'email', 'created_at', 'is_verified', 'verified_at']);
             } else {
                 $data = User::filter(request()->search['value'])
                     ->offset($start)
                     ->limit($limit)
-                    ->get(['id', 'name', 'email', 'created_at', 'is_verified']);
+                    ->get(['id', 'name', 'email', 'created_at', 'is_verified', 'verified_at']);
 
                 $totalFiltered = $data->count();
             }
@@ -36,7 +36,10 @@ class writerService {
                     return date('d-m-Y H:i:s', strtotime($data->created_at));
                 })
                 ->editColumn('is_verified', function ($data) {
-                    return $data->is_verified ? '<span class="badge bg-success">' . date('d-m-Y H:i:s', strtotime($data->is_verified)) . '</span>' : '<span class="badge bg-danger">Unverified</span>';
+                    if ($data['is_verified'] == 1) {
+                        $data['verified_at'] = date('Y-m-d H:i:s');
+                    }
+                    return $data->verified_at ? '<span class="badge bg-success">' . date('d-m-Y H:i:s', strtotime($data->verified_at)) . '</span>' : '<span class="badge bg-danger">Unverified</span>';
                 })
                 ->addColumn('action', function ($data) {
                     $actionBtn = '

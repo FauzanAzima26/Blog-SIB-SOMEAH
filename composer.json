@@ -10,6 +10,7 @@
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.5",
+        "marineusde/larapex-charts": "^1.4",
         "maatwebsite/excel": "^3.1",
         "proengsoft/laravel-jsvalidation": "^4.9",
         "yajra/laravel-datatables-oracle": "^11.1"
